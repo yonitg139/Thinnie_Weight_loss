@@ -59,9 +59,18 @@ public class MainActivity extends AppCompatActivity {
         login = findViewById(R.id.login);
     }
 
-    public void login(View view) throws IOException {
+    public void login(View view) {
         String url = "https://talez.mtacloud.co.il/includes/app/user_login.php";
         RequestQueue queue = Volley.newRequestQueue(this);
+
+        final String inputUsername = username.getText().toString();
+        final String inputPassword = password.getText().toString();
+        final boolean inputRemember = loginState.isChecked();
+
+        if (inputUsername.equals("") || inputPassword.equals("")) {
+            Toast.makeText(MainActivity.this, "Bad Input", Toast.LENGTH_SHORT). show();
+            return;
+        }
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -79,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
                         editor.putString(ID, Id);
                         editor.commit();
 
-//                        SharedPreferences loggedInPreference = getSharedPreferences(LOGGED_IN_PREFERENCE, 0);
-//                        SharedPreferences.Editor loggedInEditor = loggedInPreference.edit();
-//                        editor.putBoolean(LOGGED_IN_KEY, loginState.isChecked());
-//                        editor.commit();
+                        SharedPreferences loggedInPreference = getSharedPreferences(LOGGED_IN_PREFERENCE, 0);
+                        SharedPreferences.Editor loggedInEditor = loggedInPreference.edit();
+                        loggedInEditor.putBoolean(LOGGED_IN_KEY, inputRemember);
+                        loggedInEditor.commit();
 
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
@@ -107,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         })
         {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("username", username.getText().toString());
                 params.put("password", password.getText().toString());
