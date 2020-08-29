@@ -69,15 +69,23 @@ public class LoginActivity extends AppCompatActivity {
         loss.setText(String.valueOf(loss_value));
         fat.setText(String.valueOf(fat_value));
 
-        String url = "https://talez.mtacloud.co.il/includes/app/weight_update.php";
+        String url = "https://talez.mtacloud.co.il/includes/app/traj_check.php";
         RequestQueue queue = Volley.newRequestQueue(this);
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(LoginActivity.this, "success", Toast.LENGTH_SHORT). show();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String result = jsonObject.getString("response");
 
+                    Toast.makeText(LoginActivity.this, "Update request result: " + result, Toast.LENGTH_SHORT). show();
+
+                } catch (JSONException e) {
+                    Toast.makeText(LoginActivity.this, "Failed to parse first response", Toast.LENGTH_SHORT). show();
+                }
             }
+
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
