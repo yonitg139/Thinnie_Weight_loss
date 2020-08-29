@@ -2,7 +2,6 @@ package com.example.thinnie_weight_loss;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -60,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         loss = findViewById(R.id.weightLoss);
         percent = findViewById(R.id.weightPercent);
         bmi = findViewById(R.id.BMIData);
-        weight = findViewById(R.id.CurrentWeight);
+        weight = findViewById(R.id.CurWeight);
 
         //show values once without saving in DB
         weight.setText(weight_value.toString());
@@ -102,6 +101,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
         queue.add(request);
-
     }
 }
