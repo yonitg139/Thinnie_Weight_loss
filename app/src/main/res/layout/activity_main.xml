@@ -4,37 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="#FFFFFF"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/ThinnieLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="84dp"
+        android:id="@+id/thinnieLogo"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
         android:layout_gravity="center"
-        android:background="#00BCD4"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:srcCompat="@drawable/logo" />
-
-    <TextView
-        android:id="@+id/loginTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
         android:background="#FFFFFF"
-        android:fontFamily="@font/baloo"
-        android:gravity="center"
-        android:text="Please Login"
-        android:textSize="30sp" />
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        app:srcCompat="@drawable/logo" />
 
     <EditText
         android:id="@+id/userName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
+        android:background="#FFFFFF"
         android:fontFamily="@font/baloo"
         android:gravity="center"
         android:hint="User Name"
@@ -46,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
+        android:background="#FFFFFF"
         android:fontFamily="@font/baloo"
         android:gravity="center"
         android:hint="Password"
@@ -57,9 +50,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:buttonTint="#00BCD4"
+        android:background="#FFFFFF"
+        android:buttonTint="@color/colorPrimary"
         android:text="Keep Me Logged In"
-        android:textColor="#00BCD4" />
+        android:textColor="@color/colorPrimary" />
 
 
     <Button
@@ -68,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:background="#00BCD4"
+        android:background="@color/colorPrimary"
         android:fontFamily="@font/baloo"
         android:gravity="center"
         android:onClick="login"
