@@ -125,5 +125,7 @@ public class Settings extends AppCompatActivity {
         SharedPreferences.Editor editor = settings.edit();
         editor.putStringSet(NO_ALERT_DATES_PREFERENCE_KEY, new HashSet<String>(datesToSave));
         editor.apply();
-    }
+        Toast.makeText(Settings.this, "Saved Successfully", Toast.LENGTH_LONG).show();
+
+        }
 }
