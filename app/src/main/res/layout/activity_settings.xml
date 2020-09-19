@@ -48,11 +48,47 @@
         android:text="Don't notify me on:"
         android:textSize="18sp" />
 
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="wrap_content"
+    <!--    <CalendarView-->
+    <!--        android:id="@+id/calendarView"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_marginTop="20dp" />-->
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="349dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp"
+        android:background="#00BCD4"
+        android:fontFamily="@font/baloo"
+        android:gravity="center"
+        android:onClick="save"
+        android:text="Save"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.squareup.timessquare.CalendarPickerView
+                android:id="@+id/calendarView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="#FFFFFF"
+                android:clipToPadding="false"
+                android:scrollbarStyle="outsideOverlay" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

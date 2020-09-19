@@ -24,6 +24,12 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver android:name=".NotificationReceiver">
+            <intent-filter>
+                <action android:name="com.example.thinnie_weight_loss.notify" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -2,6 +2,9 @@ package com.example.thinnie_weight_loss;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,6 +24,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         fat = findViewById(R.id.fatData);
         loss = findViewById(R.id.weightLoss);
@@ -104,6 +110,21 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
         queue.add(request);
+
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(Calendar.HOUR_OF_DAY, 17);
+        startTime.set(Calendar.MINUTE, 0);
+
+        if (startTime.getTime().compareTo(new Date()) < 0) {
+            startTime.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        Intent alarmIntent = new Intent(this, NotificationReceiver.class).setAction("com.example.thinnie_weight_loss.notify");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        int interval = 86400000;
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, startTime.getTimeInMillis(), interval, pendingIntent);
     }
 
 
