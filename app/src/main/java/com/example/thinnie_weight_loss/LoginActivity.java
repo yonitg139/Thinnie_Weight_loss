@@ -32,7 +32,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     /// values we'll get from the digital scale
-    Integer weight_value;
+    Integer weight_value = 80;
     double first_weight = 150;
     double bmi_value = 34.6;
     int loss_value;
@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
 
         //Read from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.sharedName, 0);
-        weight_value = sharedPreferences.getInt(MainActivity.WEIGHT, 0);
         id = sharedPreferences.getString(MainActivity.ID, null);
         name = sharedPreferences.getString(MainActivity.USER_NAME, null);
         percent_value = (int)Math.ceil(weight_value/first_weight*100);

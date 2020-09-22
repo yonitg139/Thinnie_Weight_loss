@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOGGED_IN_KEY = "loggedInKey";
 
     public static final String sharedName = "shared_file";
-    public final static String WEIGHT = "weight_value";
     public final static String ID = "id";
     public final static String USER_NAME = "user_name";
     private EditText username;
@@ -87,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
                         String Id = jsonObject.getString("id");
                         SharedPreferences sharedPreferences = getSharedPreferences(sharedName, 0);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putInt(WEIGHT, 100);
                         editor.putString(ID, Id);
                         editor.commit();
 
