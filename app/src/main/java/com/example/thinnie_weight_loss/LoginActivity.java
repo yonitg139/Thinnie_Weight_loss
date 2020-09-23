@@ -31,7 +31,8 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
-    /// values we'll get from the digital scale
+    /// TODO: add textedit for weight and the query for thr first weight value;
+    // TODO: think about other params (not BMI or fat percentage)
     Integer weight_value = 80;
     double first_weight = 150;
     double bmi_value = 34.6;

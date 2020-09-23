@@ -146,7 +146,7 @@ public class Settings extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-        public void save(View view) {
+    public void save(View view) {
         SharedPreferences settings = getSharedPreferences(SETTINGS_PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putStringSet(NO_ALERT_DATES_PREFERENCE_KEY, new HashSet<String>(datesToSave));
