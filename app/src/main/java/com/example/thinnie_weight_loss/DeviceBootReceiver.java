@@ -31,7 +31,7 @@ public class DeviceBootReceiver extends BroadcastReceiver {
             }
 
             Calendar startTime = Calendar.getInstance();
-            startTime.set(Calendar.HOUR_OF_DAY, 1);
+            startTime.set(Calendar.HOUR_OF_DAY, 17);
             startTime.set(Calendar.MINUTE, 0);
 
             if (startTime.getTime().compareTo(new Date()) < 0) {
