@@ -59,8 +59,6 @@ public class Settings extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.sharedName, 0);
         id = sharedPreferences.getString(MainActivity.ID, null);
 
-
-        datesToSave = new HashSet<>();
         calendar = findViewById(R.id.calendarView);
 
         Calendar nextTwoMonths = Calendar.getInstance();
@@ -71,7 +69,7 @@ public class Settings extends AppCompatActivity {
 
 //        highlight already selected dates in the calendar
         SharedPreferences settings = getSharedPreferences(SETTINGS_PREFERENCE_NAME, Context.MODE_PRIVATE);
-        datesToSave = settings.getStringSet(NO_ALERT_DATES_PREFERENCE_KEY, new HashSet<String>());
+        datesToSave = new HashSet<>(settings.getStringSet(NO_ALERT_DATES_PREFERENCE_KEY, new HashSet<String>()));
         String todayStr = dateFormatter.format(new Date());
 
         for (String dateStr : datesToSave) {
@@ -101,26 +99,6 @@ public class Settings extends AppCompatActivity {
                 datesToSave.remove(dateFormatter.format(date));
             }
         });
-//        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//            @Override
-//            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-////                constructs date object
-////                Calendar c = Calendar.getInstance();
-////                c.set(year, month, dayOfMonth);
-//
-//                String dateToAddStr = String.format(DATE_STRING_FORMAT, year, month, dayOfMonth);
-//
-//                if(datesToSave.contains(dateToAddStr)) {
-//                    datesToSave.remove(dateToAddStr);
-////                    check whether or not contains works
-////                    set date color as potentially removed
-//                }
-//                else {
-//                    datesToSave.add(dateToAddStr);
-////                    set date color as selected
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -152,6 +130,7 @@ public class Settings extends AppCompatActivity {
         editor.putStringSet(NO_ALERT_DATES_PREFERENCE_KEY, new HashSet<String>(datesToSave));
         editor.apply();
         Toast.makeText(Settings.this, "Saved Successfully", Toast.LENGTH_LONG).show();
+
 
         String url = "https://talez.mtacloud.co.il/includes/app/insert_dates.php";
         RequestQueue queue = Volley.newRequestQueue(this);

@@ -61,7 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         //Read from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.sharedName, 0);
         id = sharedPreferences.getString(MainActivity.ID, null);
-        name = sharedPreferences.getString(MainActivity.USER_NAME, null);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -74,40 +73,6 @@ public class LoginActivity extends AppCompatActivity {
         lastTime = findViewById(R.id.LastTime);
         weight_value = findViewById(R.id.CurWeight);
 
-
-        String url = "https://talez.mtacloud.co.il/includes/app/traj_check.php";
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    String result = jsonObject.getString("response");
-
-                    Toast.makeText(LoginActivity.this, "Update request result: " + result, Toast.LENGTH_SHORT). show();
-
-                } catch (JSONException e) {
-                    Toast.makeText(LoginActivity.this, "Failed to parse first response", Toast.LENGTH_SHORT). show();
-                }
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, "Failed to update", Toast.LENGTH_SHORT). show();
-            }
-        })
-        {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String, String> params = new HashMap<>();
-                params.put("Id", id);
-                params.put("weight", weight_value.toString());
-                return params;
-            }
-        };
-        queue.add(request);
 
         Calendar startTime = Calendar.getInstance();
         startTime.set(Calendar.HOUR_OF_DAY, 17);
@@ -130,9 +95,11 @@ public class LoginActivity extends AppCompatActivity {
 
         hideKeyboard();
 
+        //if a weight value was inserted -> save weight and query for other params and show weight data
         if (weight_value.getText()!=null) {
 
-            String url = "https://talez.mtacloud.co.il/includes/app/getInitialData.php";
+            //save weight and check if exception
+            String url = "https://talez.mtacloud.co.il/includes/app/traj_check.php";
             RequestQueue queue = Volley.newRequestQueue(this);
 
             StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -142,7 +109,42 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(response);
                         String result = jsonObject.getString("response");
 
-                        if (result.equals("ok")) {
+                        Toast.makeText(LoginActivity.this, "Update request result: " + result, Toast.LENGTH_SHORT). show();
+
+                    } catch (JSONException e) {
+                        Toast.makeText(LoginActivity.this, "Failed to parse first response", Toast.LENGTH_SHORT). show();
+                    }
+                }
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(LoginActivity.this, "Failed to save", Toast.LENGTH_SHORT). show();
+                }
+            })
+            {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("Id", id);
+                    params.put("weight", weight_value.getText().toString());
+                    return params;
+                }
+            };
+            queue.add(request);
+
+            //query for other prams and show them
+            String url2 = "https://talez.mtacloud.co.il/includes/app/getInitialData.php";
+            RequestQueue queue2 = Volley.newRequestQueue(this);
+
+            StringRequest request2 = new StringRequest(Request.Method.POST, url2, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response2) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response2);
+                        String result2 = jsonObject.getString("response");
+
+                        if (result2.equals("ok")) {
                             first_weight_value = Double.parseDouble(jsonObject.getString("first_weight"));
                             last_time_value = jsonObject.getString("last_ts");
 
@@ -157,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (loss_value < 0) {
                                 loss_value *= -1;
                                 TextView youLostView = findViewById(R.id.loss);
-                                youLostView.setText("You gained");
+                                youLostView.setText("You gained:");
                             }
 
                             loss.setText(String.valueOf(loss_value));
@@ -166,7 +168,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                     } catch (JSONException e) {
-                        Toast.makeText(LoginActivity.this, "Failed to save", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Json failure", Toast.LENGTH_SHORT).show();
                     } catch (ParseException e) {
                         Toast.makeText(LoginActivity.this, "Failed to parse server response date", Toast.LENGTH_SHORT).show();
                     }
@@ -180,12 +182,12 @@ public class LoginActivity extends AppCompatActivity {
             }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                    HashMap<String, String> params = new HashMap<>();
-                    params.put("Id", id);
-                    return params;
+                    HashMap<String, String> params2 = new HashMap<>();
+                    params2.put("Id", id);
+                    return params2;
                 }
             };
-            queue.add(request);
+            queue2.add(request2);
         }
 
     }

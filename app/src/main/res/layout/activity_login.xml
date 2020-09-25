@@ -82,7 +82,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/baloo"
             android:gravity="center"
-            android:text="You lost"
+            android:text="You lost:"
             android:textSize="18sp" />
 
         <TextView
@@ -110,7 +110,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/baloo"
             android:gravity="center"
-            android:text="Last weight time"
+            android:text="Last weight time:"
             android:textSize="18sp" />
 
         <TextView
@@ -139,7 +139,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/baloo"
             android:gravity="center"
-            android:text="First weight"
+            android:text="Your first weight:"
             android:textSize="18sp" />
 
         <TextView
@@ -167,7 +167,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/baloo"
             android:gravity="center"
-            android:text="weight %"
+            android:text="weight %:"
             android:textSize="18sp" />
 
         <TextView
