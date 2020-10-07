@@ -8,7 +8,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,21 +24,35 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.applozic.mobicomkit.api.account.register.RegistrationResponse;
+import com.applozic.mobicommons.commons.core.utils.Utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import io.kommunicate.KmChatBuilder;
+import io.kommunicate.KmConversationHelper;
+import io.kommunicate.KmException;
+import io.kommunicate.Kommunicate;
+import io.kommunicate.callbacks.KMLoginHandler;
+import io.kommunicate.callbacks.KmCallback;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final SimpleDateFormat uiDateFormatter = new SimpleDateFormat("y/M/d");
+    public static final SimpleDateFormat uiDateFormatter = new SimpleDateFormat("y/M/d");
     private static final SimpleDateFormat serverDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public final static String WEIGHT_DATE = "weight_date";
+
+    private int conversationId;
 
     EditText weight_value;
     double first_weight_value;
@@ -58,8 +71,28 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        //chat
+        Kommunicate.init(this, "1c920a286ff8e0f19f9350ea697efb954");
+
+        List<String> botList = new ArrayList(); botList.add("alex-uaasr"); //enter your integrated bot Ids
+        new KmChatBuilder(this).setChatName("Support")
+                .setBotIds(botList)
+                .setSingleChat(false)
+                .createChat(new KmCallback() {
+                    @Override
+                    public void onSuccess(Object message) {
+                        conversationId = Integer.valueOf(message.toString());
+                        Utils.printLog(LoginActivity.this, "ChatTest", "Success : " + message);
+                    }
+
+                    @Override
+                    public void onFailure(Object error) {
+                        Utils.printLog(LoginActivity.this, "ChatTest", "Failure : " + error);
+                    }
+                });
+
         //Read from shared preferences
-        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.sharedName, 0);
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.SHARED_NAME, 0);
         id = sharedPreferences.getString(MainActivity.ID, null);
 
         super.onCreate(savedInstanceState);
@@ -90,6 +123,24 @@ public class LoginActivity extends AppCompatActivity {
         manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, startTime.getTimeInMillis(), interval, pendingIntent);
     }
 
+    public void startConvo(View view) {
+        try {
+            KmConversationHelper.openConversation(this,
+                    true,
+                    conversationId,
+                    new KmCallback() {
+                        @Override
+                        public void onSuccess(Object message) {
+                        }
+
+                        @Override
+                        public void onFailure(Object error) {
+                        }
+                    });
+        } catch (KmException e) {
+            Toast.makeText(LoginActivity.this, "failed to start convo: " + e, Toast.LENGTH_SHORT). show();
+        }
+    }
 
     public void sendWeight(View view) {
 
@@ -97,6 +148,12 @@ public class LoginActivity extends AppCompatActivity {
 
         //if a weight value was inserted -> save weight and query for other params and show weight data
         if (weight_value.getText()!=null) {
+
+            //save weight in shared preferences
+            SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.SHARED_NAME, 0);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(WEIGHT_DATE, uiDateFormatter.format(new Date()));
+            editor.commit();
 
             //save weight and check if exception
             String url = "https://talez.mtacloud.co.il/includes/app/traj_check.php";

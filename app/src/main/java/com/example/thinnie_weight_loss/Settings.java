@@ -1,6 +1,5 @@
 package com.example.thinnie_weight_loss;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -11,8 +10,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.CalendarView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -56,7 +53,7 @@ public class Settings extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //read id from shared preferences
-        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.sharedName, 0);
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.SHARED_NAME, 0);
         id = sharedPreferences.getString(MainActivity.ID, null);
 
         calendar = findViewById(R.id.calendarView);

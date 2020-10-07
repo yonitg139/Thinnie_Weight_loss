@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,12 +43,19 @@ public class NotificationReceiver extends BroadcastReceiver {
         SharedPreferences settings = context.getSharedPreferences(SETTINGS_PREFERENCE_NAME, MODE_PRIVATE);
         Set<String> selectedDates = settings.getStringSet(NO_ALERT_DATES_PREFERENCE_KEY, new HashSet<String>());
 
+//      get last weight date from shared preferences
+        SharedPreferences sharedPreferences = context.getSharedPreferences(MainActivity.SHARED_NAME, 0);
+        String weightDate = sharedPreferences.getString(LoginActivity.WEIGHT_DATE, "");
+        boolean weightedToday = LoginActivity.uiDateFormatter.format(new Date()).equals(weightDate);
+
         String todayString = calendarToString(Calendar.getInstance());
-        if(selectedDates.contains(todayString)) {
-//            today is a no-notification day
+        if(selectedDates.contains(todayString) || weightedToday) {
+//            today is a no-notification day or already weighted
             return;
         }
 
+
+//      create intent on notification click that launches LoginActivity
         Intent loginIntent = new Intent(context, LoginActivity.class);
         loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, loginIntent, 0);
@@ -56,7 +64,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_settings)
                 .setContentTitle("Thinnie Reminder")
-                .setContentText("Don't forget to hop on your weight!")
+                .setContentText("Don't forget to insert your weight!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)

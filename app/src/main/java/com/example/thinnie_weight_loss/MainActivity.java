@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -24,7 +22,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,9 +31,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOGGED_IN_PREFERENCE = "loggedInPreference";
     public static final String LOGGED_IN_KEY = "loggedInKey";
 
-    public static final String sharedName = "shared_file";
+    public static final String SHARED_NAME = "shared_file";
     public final static String ID = "id";
-    public final static String USER_NAME = "user_name";
     private EditText username;
     private EditText password;
     CheckBox loginState;
@@ -85,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (result.equals("ok")){
                         String Id = jsonObject.getString("id");
-                        SharedPreferences sharedPreferences = getSharedPreferences(sharedName, 0);
+                        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_NAME, 0);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString(ID, Id);
                         editor.commit();

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -39,7 +38,7 @@ public class History extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.sharedName, 0);
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.SHARED_NAME, 0);
         id = sharedPreferences.getString(MainActivity.ID, null);
         recyclerView = findViewById(R.id.weight_list);
 
