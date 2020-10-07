@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,19 +22,17 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String LOGGED_IN_PREFERENCE = "loggedInPreference";
     public static final String LOGGED_IN_KEY = "loggedInKey";
 
-    public static final String sharedName = "shared_file";
-    public final static String WEIGHT = "weight_value";
+    public static final String SHARED_NAME = "shared_file";
     public final static String ID = "id";
-    public final static String USER_NAME = "user_name";
     private EditText username;
     private EditText password;
     CheckBox loginState;
@@ -52,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         username = findViewById(R.id.userName);
         password = findViewById(R.id.Password);
@@ -82,9 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
                     if (result.equals("ok")){
                         String Id = jsonObject.getString("id");
-                        SharedPreferences sharedPreferences = getSharedPreferences(sharedName, 0);
+                        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_NAME, 0);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putInt(WEIGHT, 100);
                         editor.putString(ID, Id);
                         editor.commit();
 
